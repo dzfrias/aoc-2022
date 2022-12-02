@@ -1,6 +1,6 @@
 pub fn solution() -> u32 {
     let mut all = 0u32;
-    for line in include_str!("./input.txt").lines() {
+    for line in include_str!("../inputs/day_2.txt").lines() {
         all += match line {
             "A X" => 3,
             "A Y" => 4,
