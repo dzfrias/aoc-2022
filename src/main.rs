@@ -11,6 +11,10 @@ struct Args {
     /// Solution to print to screen
     #[arg(value_parser = valid_day)]
     day: String,
+
+    /// View the solution of a given day
+    #[arg(short, long)]
+    view: bool,
 }
 
 fn valid_day(day: &str) -> Result<String, String> {
@@ -38,13 +42,24 @@ fn valid_day(day: &str) -> Result<String, String> {
 
 fn main() {
     let args = Args::parse();
-    let solution: Box<dyn Display> = match args.day.as_ref() {
-        "1a" => Box::new(day_1a::solution()),
-        "1b" => Box::new(day_1b::solution()),
-        _ => {
-            eprintln!("the solution to this day isn't here yet!");
-            process::exit(1);
+    if args.view {
+        match args.day.as_ref() {
+            "1a" => println!("{}", include_str!("./day_1a/mod.rs")),
+            "1b" => println!("{}", include_str!("./day_1b/mod.rs")),
+            _ => {
+                eprintln!("the solution to this day isn't here yet!");
+                process::exit(1);
+            }
         }
-    };
-    println!("{solution}");
+    } else {
+        let solution: Box<dyn Display> = match args.day.as_ref() {
+            "1a" => Box::new(day_1a::solution()),
+            "1b" => Box::new(day_1b::solution()),
+            _ => {
+                eprintln!("the solution to this day isn't here yet!");
+                process::exit(1);
+            }
+        };
+        println!("{solution}");
+    }
 }
