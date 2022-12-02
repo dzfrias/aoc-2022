@@ -44,16 +44,18 @@ fn valid_day(day: &str) -> Result<String, String> {
 fn main() {
     let args = Args::parse();
     if args.view {
-        match args.day.as_ref() {
-            "1a" => println!("{}", include_str!("./day_1a/mod.rs")),
-            "1b" => println!("{}", include_str!("./day_1b/mod.rs")),
-            "2a" => println!("{}", include_str!("./day_2a/mod.rs")),
-            "2b" => println!("{}", include_str!("./day_2b/mod.rs")),
-            _ => {
-                eprintln!("the solution to this day isn't here yet!");
-                process::exit(1);
-            }
+        macro_rules! gen_views {
+            ($($day:tt),+) => {
+                match args.day.as_ref() {
+                    $($day => println!("{}", include_str!(concat!("./day_", $day, "/mod.rs"))),)+
+                    _ => {
+                        eprintln!("the solution to this day isn't here yet!");
+                        process::exit(1);
+                    }
+                }
+            };
         }
+        gen_views!("1a", "1b", "2a", "2b");
     } else {
         let solution = match args.day.as_ref() {
             "1a" => day_1a::solution(),
