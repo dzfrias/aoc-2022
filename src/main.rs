@@ -58,10 +58,10 @@ fn main() {
         gen_views!("1a", "1b", "2a", "2b");
     } else {
         let solution = match args.day.as_ref() {
-            "1a" => day_1a::solution(),
-            "1b" => day_1b::solution(),
-            "2a" => day_2a::solution(),
-            "2b" => day_2b::solution(),
+            "1a" => day_1a::solution(include_str!("./inputs/day_1.txt")),
+            "1b" => day_1b::solution(include_str!("./inputs/day_1.txt")),
+            "2a" => day_2a::solution(include_str!("./inputs/day_2.txt")),
+            "2b" => day_2b::solution(include_str!("./inputs/day_2.txt")),
             _ => {
                 eprintln!("the solution to this day isn't here yet!");
                 process::exit(1);
