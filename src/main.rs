@@ -51,7 +51,9 @@ fn valid_day(day: &str) -> Result<String, String> {
 }
 
 fn read_or(file: Option<PathBuf>, or: &str) -> Result<String, Box<dyn Error>> {
-    Ok(file.map(fs::read_to_string).unwrap_or(Ok(or.to_owned()))?)
+    Ok(file
+        .map(fs::read_to_string)
+        .unwrap_or_else(|| Ok(or.to_owned()))?)
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
