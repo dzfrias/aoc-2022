@@ -6,6 +6,9 @@ mod day_3a;
 mod day_3b;
 
 use clap::Parser;
+use std::error::Error;
+use std::fs;
+use std::path::PathBuf;
 use std::process;
 
 #[derive(Parser, Debug)]
@@ -14,6 +17,10 @@ struct Args {
     /// Solution to print to screen
     #[arg(value_parser = valid_day)]
     day: String,
+
+    /// File to use as input
+    #[arg(value_name = "FILE", conflicts_with = "view")]
+    input: Option<PathBuf>,
 
     /// View the solution of a given day
     #[arg(short, long)]
@@ -43,7 +50,11 @@ fn valid_day(day: &str) -> Result<String, String> {
     }
 }
 
-fn main() {
+fn read_or(file: Option<PathBuf>, or: &str) -> Result<String, Box<dyn Error>> {
+    Ok(file.map(fs::read_to_string).unwrap_or(Ok(or.to_owned()))?)
+}
+
+fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
     if args.view {
         macro_rules! gen_views {
@@ -58,19 +69,21 @@ fn main() {
             };
         }
         gen_views!("1a", "1b", "2a", "2b", "3a", "3b");
+        Ok(())
     } else {
         let solution = match args.day.as_ref() {
-            "1a" => day_1a::solution(include_str!("./inputs/day_1.txt")),
-            "1b" => day_1b::solution(include_str!("./inputs/day_1.txt")),
-            "2a" => day_2a::solution(include_str!("./inputs/day_2.txt")),
-            "2b" => day_2b::solution(include_str!("./inputs/day_2.txt")),
-            "3a" => day_3a::solution(include_str!("./inputs/day_3.txt")),
-            "3b" => day_3b::solution(include_str!("./inputs/day_3.txt")),
+            "1a" => day_1a::solution(&read_or(args.input, include_str!("./inputs/day_1.txt"))?),
+            "1b" => day_1b::solution(&read_or(args.input, include_str!("./inputs/day_1.txt"))?),
+            "2a" => day_2a::solution(&read_or(args.input, include_str!("./inputs/day_2.txt"))?),
+            "2b" => day_2b::solution(&read_or(args.input, include_str!("./inputs/day_2.txt"))?),
+            "3a" => day_3a::solution(&read_or(args.input, include_str!("./inputs/day_3.txt"))?),
+            "3b" => day_3b::solution(&read_or(args.input, include_str!("./inputs/day_3.txt"))?),
             _ => {
                 eprintln!("the solution to this day isn't here yet!");
                 process::exit(1);
             }
         };
         println!("{solution}");
+        Ok(())
     }
 }
