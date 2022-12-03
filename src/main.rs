@@ -2,6 +2,8 @@ mod day_1a;
 mod day_1b;
 mod day_2a;
 mod day_2b;
+mod day_3a;
+mod day_3b;
 
 use clap::Parser;
 use std::process;
@@ -55,13 +57,15 @@ fn main() {
                 }
             };
         }
-        gen_views!("1a", "1b", "2a", "2b");
+        gen_views!("1a", "1b", "2a", "2b", "3a", "3b");
     } else {
         let solution = match args.day.as_ref() {
             "1a" => day_1a::solution(include_str!("./inputs/day_1.txt")),
             "1b" => day_1b::solution(include_str!("./inputs/day_1.txt")),
             "2a" => day_2a::solution(include_str!("./inputs/day_2.txt")),
             "2b" => day_2b::solution(include_str!("./inputs/day_2.txt")),
+            "3a" => day_3a::solution(include_str!("./inputs/day_3.txt")),
+            "3b" => day_3b::solution(include_str!("./inputs/day_3.txt")),
             _ => {
                 eprintln!("the solution to this day isn't here yet!");
                 process::exit(1);
