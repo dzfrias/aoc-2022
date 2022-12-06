@@ -6,9 +6,12 @@ mod day_3a;
 mod day_3b;
 mod day_4a;
 mod day_4b;
+mod day_5a;
+mod day_5b;
 
 use clap::Parser;
 use std::error::Error;
+use std::fmt::Display;
 use std::fs;
 use std::path::PathBuf;
 use std::process;
@@ -72,18 +75,50 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
             };
         }
-        gen_views!("1a", "1b", "2a", "2b", "3a", "3b");
+        gen_views!("1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b", "5a", "5b");
         Ok(())
     } else {
-        let solution = match args.day.as_ref() {
-            "1a" => day_1a::solution(&read_or(args.input, include_str!("./inputs/day_1.txt"))?),
-            "1b" => day_1b::solution(&read_or(args.input, include_str!("./inputs/day_1.txt"))?),
-            "2a" => day_2a::solution(&read_or(args.input, include_str!("./inputs/day_2.txt"))?),
-            "2b" => day_2b::solution(&read_or(args.input, include_str!("./inputs/day_2.txt"))?),
-            "3a" => day_3a::solution(&read_or(args.input, include_str!("./inputs/day_3.txt"))?),
-            "3b" => day_3b::solution(&read_or(args.input, include_str!("./inputs/day_3.txt"))?),
-            "4a" => day_4a::solution(&read_or(args.input, include_str!("./inputs/day_4.txt"))?),
-            "4b" => day_4b::solution(&read_or(args.input, include_str!("./inputs/day_4.txt"))?),
+        let solution: Box<dyn Display> = match args.day.as_ref() {
+            "1a" => Box::new(day_1a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_1.txt"),
+            )?)),
+            "1b" => Box::new(day_1b::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_1.txt"),
+            )?)),
+            "2a" => Box::new(day_2a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_2.txt"),
+            )?)),
+            "2b" => Box::new(day_2b::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_2.txt"),
+            )?)),
+            "3a" => Box::new(day_3a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_3.txt"),
+            )?)),
+            "3b" => Box::new(day_3b::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_3.txt"),
+            )?)),
+            "4a" => Box::new(day_4a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_4.txt"),
+            )?)),
+            "4b" => Box::new(day_4b::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_4.txt"),
+            )?)),
+            "5a" => Box::new(day_5a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_5.txt"),
+            )?)),
+            "5b" => Box::new(day_5b::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_5.txt"),
+            )?)),
             _ => {
                 eprintln!("the solution to this day isn't here yet!");
                 process::exit(1);
