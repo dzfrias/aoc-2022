@@ -77,7 +77,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
             };
         }
-        gen_views!("1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b", "5a", "5b");
+        gen_views!("1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b", "5a", "5b", "6a", "6b");
         Ok(())
     } else {
         let solution: Box<dyn Display> = match args.day.as_ref() {
