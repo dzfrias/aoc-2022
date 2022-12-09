@@ -10,6 +10,7 @@ mod day_5a;
 mod day_5b;
 mod day_6a;
 mod day_6b;
+mod day_8a;
 
 use clap::Parser;
 use std::error::Error;
@@ -128,6 +129,10 @@ fn main() -> Result<(), Box<dyn Error>> {
             "6b" => Box::new(day_6b::solution(&read_or(
                 args.input,
                 include_str!("./inputs/day_6.txt"),
+            )?)),
+            "8a" => Box::new(day_8a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_8.txt"),
             )?)),
             _ => {
                 eprintln!("the solution to this day isn't here yet!");
