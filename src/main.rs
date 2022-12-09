@@ -11,6 +11,7 @@ mod day_5b;
 mod day_6a;
 mod day_6b;
 mod day_8a;
+mod day_8b;
 
 use clap::Parser;
 use std::error::Error;
@@ -78,7 +79,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
             };
         }
-        gen_views!("1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b", "5a", "5b", "6a", "6b");
+        gen_views!(
+            "1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b", "5a", "5b", "6a", "6b", "8a", "8b"
+        );
         Ok(())
     } else {
         let solution: Box<dyn Display> = match args.day.as_ref() {
@@ -131,6 +134,10 @@ fn main() -> Result<(), Box<dyn Error>> {
                 include_str!("./inputs/day_6.txt"),
             )?)),
             "8a" => Box::new(day_8a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_8.txt"),
+            )?)),
+            "8b" => Box::new(day_8b::solution(&read_or(
                 args.input,
                 include_str!("./inputs/day_8.txt"),
             )?)),
