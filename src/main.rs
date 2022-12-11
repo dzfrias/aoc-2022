@@ -1,3 +1,5 @@
+#![feature(iter_array_chunks)]
+
 mod day_1a;
 mod day_1b;
 mod day_2a;
@@ -13,6 +15,7 @@ mod day_6b;
 mod day_8a;
 mod day_8b;
 mod day_9a;
+mod day_9b;
 
 use clap::Parser;
 use std::error::Error;
@@ -81,7 +84,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             };
         }
         gen_views!(
-            "1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b", "5a", "5b", "6a", "6b", "8a", "8b"
+            "1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b", "5a", "5b", "6a", "6b", "8a", "8b",
+            "9a", "9b"
         );
         Ok(())
     } else {
@@ -143,6 +147,10 @@ fn main() -> Result<(), Box<dyn Error>> {
                 include_str!("./inputs/day_8.txt"),
             )?)),
             "9a" => Box::new(day_9a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_9.txt"),
+            )?)),
+            "9b" => Box::new(day_9b::solution(&read_or(
                 args.input,
                 include_str!("./inputs/day_9.txt"),
             )?)),
