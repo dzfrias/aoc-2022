@@ -1,6 +1,7 @@
 #![feature(iter_array_chunks)]
 
 mod day_10a;
+mod day_10b;
 mod day_1a;
 mod day_1b;
 mod day_2a;
@@ -156,6 +157,10 @@ fn main() -> Result<(), Box<dyn Error>> {
                 include_str!("./inputs/day_9.txt"),
             )?)),
             "10a" => Box::new(day_10a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_10.txt"),
+            )?)),
+            "10b" => Box::new(day_10b::solution(&read_or(
                 args.input,
                 include_str!("./inputs/day_10.txt"),
             )?)),
