@@ -2,6 +2,7 @@ mod day_10a;
 mod day_10b;
 mod day_13a;
 mod day_13b;
+mod day_14a;
 mod day_1a;
 mod day_1b;
 mod day_2a;
@@ -171,6 +172,10 @@ fn main() -> Result<(), Box<dyn Error>> {
             "13b" => Box::new(day_13b::solution(&read_or(
                 args.input,
                 include_str!("./inputs/day_13.txt"),
+            )?)),
+            "14a" => Box::new(day_14a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_14.txt"),
             )?)),
             _ => {
                 eprintln!("the solution to this day isn't here yet!");
