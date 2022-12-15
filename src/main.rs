@@ -3,6 +3,7 @@ mod day_10b;
 mod day_13a;
 mod day_13b;
 mod day_14a;
+mod day_14b;
 mod day_1a;
 mod day_1b;
 mod day_2a;
@@ -174,6 +175,10 @@ fn main() -> Result<(), Box<dyn Error>> {
                 include_str!("./inputs/day_13.txt"),
             )?)),
             "14a" => Box::new(day_14a::solution(&read_or(
+                args.input,
+                include_str!("./inputs/day_14.txt"),
+            )?)),
+            "14b" => Box::new(day_14b::solution(&read_or(
                 args.input,
                 include_str!("./inputs/day_14.txt"),
             )?)),
