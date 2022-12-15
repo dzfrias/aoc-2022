@@ -29,15 +29,7 @@ impl PartialOrd for Item {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         match (self, other) {
             (Self::Num(n1), Self::Num(n2)) => n1.partial_cmp(n2),
-            (Self::List(list1), Self::List(list2)) => {
-                for (item1, item2) in list1.iter().zip(list2) {
-                    if item1.partial_cmp(item2) == Some(Ordering::Equal) {
-                        continue;
-                    }
-                    return item1.partial_cmp(item2);
-                }
-                list1.len().partial_cmp(&list2.len())
-            }
+            (Self::List(list1), Self::List(list2)) => list1.partial_cmp(list2),
             (Self::List(_), Self::Num(n2)) => self.partial_cmp(&Self::List(vec![Self::Num(*n2)])),
             (Self::Num(n1), Self::List(_)) => Self::List(vec![Self::Num(*n1)]).partial_cmp(other),
         }
@@ -73,8 +65,7 @@ fn parse_list(lexer: &mut Peekable<Lexer<Token>>) -> Vec<Item> {
 }
 
 pub fn solution(input: &str) -> usize {
-    let input = "[[2]]\n[[6]]\n".to_owned() + input;
-    let mut packets = input
+    let mut packets = ("[[2]]\n[[6]]\n".to_owned() + &input)
         .lines()
         .filter(|line| !line.is_empty())
         .map(|line| {

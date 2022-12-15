@@ -1,5 +1,6 @@
 use std::cmp::Ordering;
 use std::iter::Peekable;
+use std::mem;
 
 use logos::{Lexer, Logos};
 
@@ -29,15 +30,7 @@ impl PartialOrd for Item {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         match (self, other) {
             (Self::Num(n1), Self::Num(n2)) => n1.partial_cmp(n2),
-            (Self::List(list1), Self::List(list2)) => {
-                for (item1, item2) in list1.iter().zip(list2) {
-                    if item1.partial_cmp(item2) == Some(Ordering::Equal) {
-                        continue;
-                    }
-                    return item1.partial_cmp(item2);
-                }
-                list1.len().partial_cmp(&list2.len())
-            }
+            (Self::List(list1), Self::List(list2)) => list1.partial_cmp(list2),
             (Self::List(_), Self::Num(n2)) => self.partial_cmp(&Self::List(vec![Self::Num(*n2)])),
             (Self::Num(n1), Self::List(_)) => Self::List(vec![Self::Num(*n1)]).partial_cmp(other),
         }
@@ -73,27 +66,26 @@ fn parse_list(lexer: &mut Peekable<Lexer<Token>>) -> Vec<Item> {
 }
 
 pub fn solution(input: &str) -> usize {
-    let mut sum = 0;
-    for (index, packets) in input
+    input
         .split("\n\n")
-        .map(|packets| packets.lines().collect::<Vec<_>>())
+        .map(|pair| {
+            pair.lines()
+                .map(|packet| {
+                    let mut lexer = Token::lexer(packet).peekable();
+                    assert_eq!(Token::Lbracket, lexer.next().unwrap());
+                    parse_list(&mut lexer)
+                })
+                .collect::<Vec<_>>()
+        })
         .enumerate()
-    {
-        let [packet1, packet2]: [Vec<Item>; 2] = packets
-            .into_iter()
-            .map(|packet| {
-                let mut lexer = Token::lexer(packet).peekable();
-                assert_eq!(Token::Lbracket, lexer.next().unwrap());
-                parse_list(&mut lexer)
-            })
-            .collect::<Vec<_>>()
-            .try_into()
-            .unwrap();
-        if Item::List(packet1) < Item::List(packet2) {
-            sum += index + 1;
-        }
-    }
-    sum
+        .filter_map(|(index, mut pair)| {
+            if Item::List(mem::take(&mut pair[0])) < Item::List(mem::take(&mut pair[1])) {
+                Some(index + 1)
+            } else {
+                None
+            }
+        })
+        .sum::<usize>()
 }
 
 #[cfg(test)]
